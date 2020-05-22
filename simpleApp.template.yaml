@@ -1,0 +1,152 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'A simple ''traditional'' app to demonstrate an end-to-end developer experience using Cloud One Conformity'
+Metadata: 
+  License: MIT-License
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 172.0.0.0/16
+      EnableDnsSupport: true
+      Tags:
+        - Key: Environment
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::Partition'
+                      - !Ref 'AWS::Region'
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::StackName'
+                      - 'VPC'
+        - Key: Application
+          Value: !Ref AWS::StackName
+  subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-2a
+      VpcId: !Ref 'VPC'
+      CidrBlock: 172.0.1.0/24
+      Tags:
+        - Key: Environment
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::Partition'
+                      - !Ref 'AWS::Region'
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::StackName'
+                      - 'subnet'
+        - Key: Application
+          Value: !Ref AWS::StackName
+  igw:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::Partition'
+                      - !Ref 'AWS::Region'
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::StackName'
+                      - 'igw'
+        - Key: Application
+          Value: !Ref AWS::StackName
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref 'VPC'
+      InternetGatewayId: !Ref 'igw'
+  routeTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Environment
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::Partition'
+                      - !Ref 'AWS::Region'
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::StackName'
+                      - 'routeTable'
+        - Key: Application
+          Value: !Ref AWS::StackName
+  route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref 'routeTable'
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref 'igw'
+  subnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref 'subnet'
+      RouteTableId: !Ref 'routeTable'
+  networkAcl:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Environment
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::Partition'
+                      - !Ref 'AWS::Region'
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: !Join
+                    - '.'
+                    - - !Ref 'AWS::StackName'
+                      - 'networkAcl'
+        - Key: Application
+          Value: !Ref AWS::StackName
+  nAclAllowSSH:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref 'networkAcl'
+      RuleNumber: '1'
+      CidrBlock: 0.0.0.0/0
+      Protocol: "6"
+      PortRange:
+        From: '22'
+        To: '22'
+      RuleAction: allow
+      Egress: false
+  nAclAllowRDP:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref 'networkAcl'
+      RuleNumber: '2'
+      CidrBlock: 0.0.0.0/0
+      Protocol: "6"
+      PortRange:
+        From: '3389'
+        To: '3389'
+      RuleAction: allow
+      Egress: false
