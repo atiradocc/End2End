@@ -1,0 +1,18 @@
+name: CloudOne Conformity Pipeline Scanner
+on: 
+  push:
+    branches: 
+      - master
+jobs:      
+    ScanIaCTemplates:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out code for the Pipeline Scanner
+          uses: actions/checkout@v2
+        - name: Scan CloudFormation templates
+          uses: raphabot/conformity-template-scanner-pipeline@v1.0.0
+          env:
+            cc_apikey: ${{ secrets.cc_apikey }}
+            cc_region: us-west-2
+            maxMedium: 1
+            templatePath: simpleEC2Instance.template.yaml

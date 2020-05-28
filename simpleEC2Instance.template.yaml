@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "A simple 'traditional' app to demonstrate an end-to-end developer experience using Cloud One Conformity"
+Metadata:
+  License: MIT-License
+Resources:
+  ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: End2EndKeyPair
+      ImageId: ami-0d6621c01e8c2de2c
+      InstanceType: t2.nano
+      IamInstanceProfile: !Ref iamInstanceProfile
+      SecurityGroups:
+        - !Ref "securityGroup"
+      Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: End2EndEC2
+  securityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EC2 Instance Security Group
+      GroupDescription: Enable access admin and data access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: Access to SSH
+        - IpProtocol: tcp
+          FromPort: 3389
+          ToPort: 3389
+          CidrIp: 0.0.0.0/0
+          Description: Access to RDP
+      Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: End2EndSG
+  iamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref "iamRole"
+  iamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: End2EndRole
+  iamPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ListS3Buckets
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 's3:List*'
+            Resource: '*'
+      Roles: 
+        - !Ref "iamRole"
+
