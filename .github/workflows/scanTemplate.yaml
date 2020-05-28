@@ -1,4 +1,4 @@
-name: CloudOne Conformity Pipeline Scanner
+name: CI/CD Pipeline with CloudOne Conformity Pipeline Scanner
 on: 
   push:
     branches: 

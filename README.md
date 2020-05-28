@@ -1,3 +1,3 @@
 # End2End
-A simple 'traditional' app. 
+A simple app go demonstrate Cloude One Conformity. 
 
