@@ -16,7 +16,7 @@ Resources:
         - Key: Environment
           Value: staging
         - Key: Role
-          Value: read-only
+          Value: Demo
         - Key: Owner
           Value: atiradocc
         - Key: Name
