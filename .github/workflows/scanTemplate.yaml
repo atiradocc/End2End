@@ -4,7 +4,7 @@ on:
     branches: 
       - master
 jobs:      
-    ScanIaCTemplates:
+    ScanAndDeployTemplates:
       runs-on: ubuntu-latest
       steps:
         - name: Check out code for the Pipeline Scanner
@@ -14,8 +14,11 @@ jobs:
           env:
             cc_apikey: ${{ secrets.cc_apikey }}
             cc_region: us-west-2
-            maxMedium: 1
             templatePath: simpleEC2Instance.template.yaml
+            maxExtreme: 0
+            maxVeryHigh: 0
+            maxHigh: 0
+            maxMedium: 1
         - name: Set up the CLI to deploy the template
           uses: aws-actions/configure-aws-credentials@v1
           with:
