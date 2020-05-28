@@ -73,7 +73,7 @@ Resources:
         - Key: Owner
           Value: atiradocc
         - Key: Name
-          Value: End2EndRole
+          Value: End2EndiamRole
   iamPolicy:
     Type: AWS::IAM::Policy
     Properties:
