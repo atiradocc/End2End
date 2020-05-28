@@ -18,7 +18,7 @@ jobs:
             maxExtreme: 0
             maxVeryHigh: 0
             maxHigh: 0
-            maxMedium: 1
+            maxMedium: 0
         - name: Set up the CLI to deploy the template
           uses: aws-actions/configure-aws-credentials@v1
           with:
