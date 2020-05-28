@@ -20,7 +20,7 @@ Resources:
         - Key: Owner
           Value: atiradocc
         - Key: Name
-          Value: End2EndEC2
+          Value: End2EndEC2Instance
   securityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -37,6 +37,17 @@ Resources:
           ToPort: 3389
           CidrIp: 0.0.0.0/0
           Description: Access to RDP
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 172.16.1.0/24
+          Description: Access to Remote SSH
+        - IpProtocol: tcp
+          FromPort: 3389
+          ToPort: 3389
+          CidrIp: 172.16.2.0/24
+          Description: Access to Remote RDP
       Tags:
         - Key: Environment
           Value: staging
