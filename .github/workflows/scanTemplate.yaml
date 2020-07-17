@@ -31,4 +31,3 @@ jobs:
           name: simpleEC2
           template: simpleEC2Instance.template.yaml
           capabilities: CAPABILITY_NAMED_IAM
-          tags: [ { "Environment": "staging" }, { "Role": "read-only" }, { "Owner": "atiradocc" } ]

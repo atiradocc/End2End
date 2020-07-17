@@ -12,6 +12,12 @@ Resources:
       SecurityGroups:
         - !Ref "securityGroup"
       Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: Demo
+        - Key: Owner
+          Value: atiradocc
         - Key: Name
           Value: End2EndEC2Instance
   securityGroup:
@@ -41,5 +47,11 @@ Resources:
           CidrIp: 0.0.0.0/0
           Description: "Access to PostgreSQL"
       Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
         - Key: Name
           Value: End2EndSG
