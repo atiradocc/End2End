@@ -7,9 +7,10 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       KeyName: End2EndKeyPair
-      ImageId: ami-0d6621c01e8c2de2c
-      InstanceType: t2.nano
+      ImageId: ami-09d19e919d57453f8
+      InstanceType: c6g.medium
       IamInstanceProfile: !Ref iamInstanceProfile
+      Monitoring: true
       SecurityGroups:
         - !Ref "securityGroup"
       Tags:
@@ -25,18 +26,13 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: EC2 Instance Security Group
-      GroupDescription: Enable access admin and data access
+      GroupDescription: Enable access admin access to this instance
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
           Description: "Access to SSH"
-        - IpProtocol: tcp
-          FromPort: 3389
-          ToPort: 3389
-          CidrIp: 0.0.0.0/0
-          Description: "Access to RDP"
       Tags:
         - Key: Environment
           Value: staging

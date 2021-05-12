@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "An operationally excellent ec2 instance."
+Metadata:
+  License: MIT-License
+Resources:
+  securityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EC2 Instance Security Group
+      GroupDescription: Enable access admin access to this instance
+      VpcId: vpc-d53eb1ad
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: "Access to SSH"
+      Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: End2EndsecurityGroup
+  iamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: End2EndiamRole
+  iamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref "iamRole"
+  launchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: End2EndLaunchConfiguration
+      AssociatePublicIpAddress: true
+      ImageId: ami-07196cf23edf97d9c
+      IamInstanceProfile: !Ref iamInstanceProfile
+      InstanceMonitoring: true
+      InstanceType: c6g.medium
+      KeyName: End2EndKeyPair
+      SecurityGroups:
+        - Ref: securityGroup
+  asg:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: End2EndAutoScalingGroup
+      LaunchConfigurationName: !Ref launchConfig 
+      MaxSize: '1'
+      MinSize: '1'
+      DesiredCapacity: '1'
+      VPCZoneIdentifier:
+        - subnet-5b1a1f10
+      Tags:
+        - Key: Environment
+          PropagateAtLaunch: true
+          Value: staging
+        - Key: Role
+          PropagateAtLaunch: true
+          Value: read-only
+        - Key: Owner
+          PropagateAtLaunch: true
+          Value: atiradocc
+        - Key: Name
+          PropagateAtLaunch: false
+          Value: End2EndAutoScalingGroup
+  s3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: PublicRead
+      BucketName: awssummit-20210512-end2ends3bucket
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: 'AES256'
+      Tags:
+        - Key: Environment
+          Value: staging
+        - Key: Role
+          Value: read-only
+        - Key: Owner
+          Value: atiradocc
+        - Key: Name
+          Value: End2Ends3Bucket
+
