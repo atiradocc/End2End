@@ -385,3 +385,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 .idea/
+
+# DeepCodeAI
+.dccache/
