@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "A simple 'traditional' cloud app to demonstrate an end-to-end developer experience using Cloud One Conformity"
+Description: "A very simple 'traditional' cloud app to demonstrate an end-to-end developer experience using Cloud One Conformity"
 Metadata:
   License: MIT-License
 Resources:
