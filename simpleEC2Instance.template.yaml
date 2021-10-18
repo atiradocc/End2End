@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "A simple traditional app to demonstrate an end-to-end developer experience using Cloud One Conformity"
+Description: "A simple 'traditional' app to demonstrate an end-to-end developer experience using Cloud One Conformity"
 Metadata:
   License: MIT-License
 Resources:
@@ -7,7 +7,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       KeyName: End2EndKeyPair
-      ImageId: ami-013a129d325529d4d
+      ImageId: ami-0bd804c6ae66f0dcd
       InstanceType: c6g.medium
       IamInstanceProfile: !Ref iamInstanceProfile
       Monitoring: true
