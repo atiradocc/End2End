@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "A simple 'traditional' app to demonstrate an end-to-end developer experience using Cloud One Conformity"
+Description: "A simple traditional app to demonstrate an end-to-end developer experience using Cloud One Conformity"
 Metadata:
   License: MIT-License
 Resources:
@@ -60,7 +60,7 @@ Resources:
               Service:
                 - ec2.amazonaws.com
             Action:
-              - 'sts:AssumeRole'
+              - "sts:AssumeRole"
       Tags:
         - Key: Environment
           Value: staging
@@ -77,8 +77,7 @@ Resources:
       PolicyDocument:
         Statement:
           - Effect: Allow
-            Action: 's3:List*'
-            Resource: '*'
-      Roles: 
+            Action: "s3:List*"
+            Resource: "*"
+      Roles:
         - !Ref "iamRole"
-
