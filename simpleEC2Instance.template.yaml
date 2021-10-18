@@ -7,7 +7,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       KeyName: End2EndKeyPair
-      ImageId: ami-09d19e919d57453f8
+      ImageId: ami-013a129d325529d4d
       InstanceType: c6g.medium
       IamInstanceProfile: !Ref iamInstanceProfile
       Monitoring: true
