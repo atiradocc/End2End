@@ -6,7 +6,7 @@ Resources:
   ec2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      KeyName: End2EndKeyPair
+      KeyName: AWSAmbassadorKeypair
       ImageId: ami-03ad0a83902d7df88
       InstanceType: c6g.medium
       Monitoring: true
